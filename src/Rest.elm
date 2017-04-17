@@ -34,10 +34,11 @@ getChildAssemblies model parent_id =
         Http.send SetAssemblies request
 
 
+assembliesDecoder : Decode.Decoder (List Assembly)
 assembliesDecoder =
-    map
-        (\result -> result)
-        (field "result" (Decode.list (Decode.dict Decode.string)))
+    field "result" <|
+        Decode.list <|
+            Decode.dict Decode.string
 
 
 topQuery : Http.Body
@@ -56,4 +57,3 @@ childQuery key =
         , ( "batchSize", Encode.int 10000 )
         ]
         |> Http.jsonBody
-
